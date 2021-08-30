@@ -28,6 +28,23 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final VoidCallback myVoidCallback = () {};
+  String equation="0";
+  buttonPressed(String text){
+    setState(() {
+      if(text == 'C'){
+        equation="0";
+      }
+      else if(text == '='){
+
+      }
+      else if(text == '⌫'){
+
+      }
+      else{
+        equation+=text;
+      }
+    });
+  }
   Widget content(String ch,Color color){
     return Container(
       color: color,
@@ -35,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
       height: 50,
       child: FlatButton(
         child: Text(ch),
-        onPressed: myVoidCallback
+        onPressed: () => buttonPressed(ch)
       ),
     );
     print(myVoidCallback);
@@ -46,39 +63,16 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('Simple Calculator'),
       ),
-      body: /*Container(
-        child: Row(
-          children: [
-            Column(
-              children: [
-                Container(
-                  color: Colors.red,
-                  child: Text('C'),
-                ),
-                Container(
-                  color: Colors.blue,
-                  child: Icon(Icons.close)
-                ),
-                Container(
-                    color: Colors.blue,
-                    child: TextButton(child: Text('/'),)
-                ),
-                Container(
-                    color: Colors.blue,
-                    child: TextButton(child: Text('x'),)
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                for();,
-          ],
-        ),
-      ),*/
+      body:
       Container(
         child: Column(
           children: [
             Expanded(child: Divider()),
+            Container(child: Text(equation,style: TextStyle(fontSize: 30,color: Colors.blueGrey[700]),),alignment: Alignment.topRight,),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Container(child: Text('450',style: TextStyle(fontSize: 35),),alignment: Alignment.topRight,),
+            ),
             Table(
               border: TableBorder.all(color: Colors.white),
               children: [
@@ -88,10 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     content('⌫',Colors.blue),
                     content('÷',Colors.blue),
                     content('x',Colors.blue),
-                    //Container(color: Colors.red,child: Text('C'),alignment: Alignment.center,height: 50,),
-                    //Container(color: Colors.blue,child: Text('⌫'),alignment: Alignment.center,height: 50,),
-                    //Container(color: Colors.blue,child: Text('÷'),alignment: Alignment.center,height: 50,),
-                    //Container(color: Colors.blue,child: Text('x'),alignment: Alignment.center,height: 50,),
                   ]
                 ),
                 TableRow(
@@ -100,11 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       content('8',Colors.grey),
                       content('9',Colors.grey),
                       content('-',Colors.blue),
-                      //Container(color: Colors.grey,child: Text('7'),alignment: Alignment.center,height: 50,),
-                      //Container(color: Colors.grey,child: Text('8'),alignment: Alignment.center,height: 50,),
-                      //Container(color: Colors.grey,child: Text('9'),alignment: Alignment.center,height: 50,),
-                      //Container(color: Colors.blue,child: Text('-'),alignment: Alignment.center,height: 50,),
-                    ]
+                  ],
                 ),
                 TableRow(
                     children: [
@@ -112,10 +98,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       content('5',Colors.grey),
                       content('6',Colors.grey),
                       content('+',Colors.blue),
-                      //Container(color: Colors.grey,child: Text('4'),alignment: Alignment.center,height: 50,),
-                      //Container(color: Colors.grey,child: Text('5'),alignment: Alignment.center,height: 50,),
-                      //Container(color: Colors.grey,child: Text('6'),alignment: Alignment.center,height: 50,),
-                      //Container(color: Colors.blue,child: Text('+'),alignment: Alignment.center,height: 50,),
                     ]
                 ),
               ],
@@ -129,10 +111,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       content('2',Colors.grey),
                       content('3',Colors.grey),
                       content('=',Colors.red),
-                      //Container(color: Colors.grey,child: Text('1'),alignment: Alignment.center,height: 50,),
-                      //Container(color: Colors.grey,child: Text('2'),alignment: Alignment.center,height: 50,),
-                      //Container(color: Colors.grey,child: Text('3'),alignment: Alignment.center,height: 50,),
-                      //Container(color: Colors.red,child: Text('='),alignment: Alignment.center,height: 100,),
                     ]
                 ),
                TableRow(
@@ -141,10 +119,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       content('0',Colors.grey),
                       content('00',Colors.grey),
                       content("",Colors.red),
-                      //Container(color: Colors.grey,child: Text('.'),alignment: Alignment.center,height: 50,),
-                      //Container(color: Colors.grey,child: Text('0'),alignment: Alignment.center,height: 50,),
-                      //Container(color: Colors.grey,child: Text('00'),alignment: Alignment.center,height: 50,),
-                      //Container(),
                     ]
                 ),
               ],
