@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:math_expressions/math_expressions.dart';
 void main() {
   runApp(MyApp());
 }
@@ -28,20 +28,33 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final VoidCallback myVoidCallback = () {};
-  String equation="0";
+  String eqn="0",result="0",exp,expression;
   buttonPressed(String text){
     setState(() {
-      if(text == 'C'){
-        equation="0";
+      if(text == 'c'){
+        eqn="0";
+        result="0";
       }
       else if(text == '='){
-
+        exp=eqn;
+        exp=exp.replaceAll('x', '*');
+        exp=exp.replaceAll('÷','/');
+        try{
+          Parser p=Parser();
+          Expression expression=p.parse(exp);
+          ContextModel cm=ContextModel();
+          result='${expression.evaluate(EvaluationType.REAL, cm)}';
+        }catch(e){
+          result="Error";
+        }
       }
       else if(text == '⌫'){
-
+        eqn=eqn.substring(0,eqn.length-1);
+        if(eqn=="") eqn="0";
       }
       else{
-        equation+=text;
+        if(eqn=="0") eqn=text;
+        eqn+=text;
       }
     });
   }
@@ -68,58 +81,78 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: [
             Expanded(child: Divider()),
-            Container(child: Text(equation,style: TextStyle(fontSize: 30,color: Colors.blueGrey[700]),),alignment: Alignment.topRight,),
+            Container(child: Text(eqn,style: TextStyle(fontSize: 30,color: Colors.blueGrey[700]),),alignment: Alignment.topRight,),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 20),
-              child: Container(child: Text('450',style: TextStyle(fontSize: 35),),alignment: Alignment.topRight,),
+              child: Container(child: Text(result,style: TextStyle(fontSize: 35),),alignment: Alignment.topRight,),
             ),
-            Table(
-              border: TableBorder.all(color: Colors.white),
+            Row(
               children: [
-                TableRow(
-                  children: [
-                    content('c',Colors.red),
-                    content('⌫',Colors.blue),
-                    content('÷',Colors.blue),
-                    content('x',Colors.blue),
-                  ]
-                ),
-                TableRow(
+                Container(
+                  width: MediaQuery.of(context).size.width*0.75,
+                  child: Table(
+                    border: TableBorder.all(color: Colors.white),
                     children: [
-                      content('7',Colors.grey),
-                      content('8',Colors.grey),
-                      content('9',Colors.grey),
-                      content('-',Colors.blue),
-                  ],
+                      TableRow(
+                        children: [
+                          content('c',Colors.red),
+                          content('⌫',Colors.blue),
+                          content('÷',Colors.blue),
+                        ]
+                      ),
+                      TableRow(
+                          children: [
+                            content('7',Colors.grey),
+                            content('8',Colors.grey),
+                            content('9',Colors.grey),
+                        ],
+                      ),
+                      TableRow(
+                          children: [
+                            content('4',Colors.grey),
+                            content('5',Colors.grey),
+                            content('6',Colors.grey),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            content('1',Colors.grey),
+                            content('2',Colors.grey),
+                            content('3',Colors.grey),
+                          ]
+                      ),
+                      TableRow(
+                          children: [
+                            content('.',Colors.grey),
+                            content('0',Colors.grey),
+                            content('00',Colors.grey),
+                          ]
+                      ),
+                    ],
+                  ),
                 ),
-                TableRow(
+                Container(
+                  width: MediaQuery.of(context).size.width*0.25,
+                  child: Table(
+                    border: TableBorder.all(color: Colors.white),
                     children: [
-                      content('4',Colors.grey),
-                      content('5',Colors.grey),
-                      content('6',Colors.grey),
-                      content('+',Colors.blue),
-                    ]
-                ),
-              ],
-            ),
-            Table(
-              border: TableBorder.all(color: Colors.white),
-              children: [
-                TableRow(
-                    children: [
-                      content('1',Colors.grey),
-                      content('2',Colors.grey),
-                      content('3',Colors.grey),
-                      content('=',Colors.red),
-                    ]
-                ),
-               TableRow(
-                    children: [
-                      content('.',Colors.grey),
-                      content('0',Colors.grey),
-                      content('00',Colors.grey),
-                      content("",Colors.red),
-                    ]
+                      TableRow(children: [content('x',Colors.blue),]),
+                      TableRow(children: [content('-',Colors.blue),]),
+                      TableRow(children: [content('+',Colors.blue),]),
+                      TableRow(children: [
+                        Container(
+                          color: Colors.red,
+                          alignment: Alignment.center,
+                          height: 100,
+                          child: FlatButton(
+                            child: Text("="),
+                            onPressed: () => buttonPressed("=")
+                          ),
+                        ),
+                       ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
